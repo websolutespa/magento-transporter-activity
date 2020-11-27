@@ -56,8 +56,7 @@ class ActivityRepository implements ActivityRepositoryInterface
         ActivityCollectionFactory $collectionFactory,
         ActivitySearchResultInterfaceFactory $activitySearchResultInterfaceFactory,
         ActivityResourceModel $activityResourceModel
-    )
-    {
+    ) {
         $this->activityFactory = $activityFactory;
         $this->collectionFactory = $collectionFactory;
         $this->searchResultFactory = $activitySearchResultInterfaceFactory;
@@ -211,8 +210,7 @@ class ActivityRepository implements ActivityRepositoryInterface
     private function buildSearchResult(
         SearchCriteriaInterface $searchCriteria,
         ActivityCollection $collection
-    ): ActivitySearchResultInterface
-    {
+    ): ActivitySearchResultInterface {
         $searchResults = $this->searchResultFactory->create();
 
         $searchResults->setSearchCriteria($searchCriteria);
