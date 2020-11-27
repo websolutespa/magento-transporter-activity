@@ -1,0 +1,17 @@
+{
+    "name": "websolutespa/magento-transporter-activity",
+    "description": "Websolute Transporter Activity module",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": "*"
+    },
+    "license": "OSL-3.0",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Websolute\\TransporterActivity\\": ""
+        }
+    }
+}

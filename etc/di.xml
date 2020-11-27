@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright © Websolute spa. All rights reserved.
+  ~ See COPYING.txt for license details.
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Websolute\TransporterActivity\Api\ActivityRepositoryInterface" type="Websolute\TransporterActivity\Model\ActivityRepository"/>
+    <preference for="Websolute\TransporterActivity\Api\Data\ActivityInterface" type="Websolute\TransporterActivity\Model\ActivityModel"/>
+    <preference for="Websolute\TransporterActivity\Api\Data\ActivitySearchResultInterface" type="Websolute\TransporterActivity\Model\ActivitySearchResult"/>
+</config>
