@@ -15,5 +15,8 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="activity_id"/>
         </constraint>
+        <index referenceId="transporter_activity_ACTIVITY_ID" indexType="btree">
+            <column name="activity_id"/>
+        </index>
     </table>
 </schema>

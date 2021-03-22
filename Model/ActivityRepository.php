@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace Websolute\TransporterActivity\Model;
 
+use DateInterval;
+use DateTime;
 use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SortOrder;
@@ -22,6 +24,7 @@ use Websolute\TransporterActivity\Model\ActivityModelFactory as ActivityFactory;
 use Websolute\TransporterActivity\Model\ResourceModel\Activity\ActivityCollection;
 use Websolute\TransporterActivity\Model\ResourceModel\Activity\ActivityCollectionFactory;
 use Websolute\TransporterActivity\Model\ResourceModel\ActivityResourceModel;
+use Websolute\TransporterBase\Model\Config;
 
 class ActivityRepository implements ActivityRepositoryInterface
 {
@@ -46,21 +49,29 @@ class ActivityRepository implements ActivityRepositoryInterface
     private $activityResourceModel;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * @param ActivityModelFactory $activityFactory
      * @param ActivityCollectionFactory $collectionFactory
      * @param ActivitySearchResultInterfaceFactory $activitySearchResultInterfaceFactory
      * @param ActivityResourceModel $activityResourceModel
+     * @param Config $config
      */
     public function __construct(
         ActivityFactory $activityFactory,
         ActivityCollectionFactory $collectionFactory,
         ActivitySearchResultInterfaceFactory $activitySearchResultInterfaceFactory,
-        ActivityResourceModel $activityResourceModel
+        ActivityResourceModel $activityResourceModel,
+        Config $config
     ) {
         $this->activityFactory = $activityFactory;
         $this->collectionFactory = $collectionFactory;
         $this->searchResultFactory = $activitySearchResultInterfaceFactory;
         $this->activityResourceModel = $activityResourceModel;
+        $this->config = $config;
     }
 
     /**
@@ -85,21 +96,26 @@ class ActivityRepository implements ActivityRepositoryInterface
      */
     public function getFirstDownloadedByType(string $type): ActivityInterface
     {
-        return $this->getFirstByTypeAndStatus($type, ActivityStateInterface::DOWNLOADED);
+        return $this->getOneByTypeAndStatus(
+            $type,
+            ActivityStateInterface::DOWNLOADED,
+            Collection::SORT_ORDER_ASC
+        );
     }
 
     /**
      * @param string $type
+     * @param string $status
+     * @param string $order
      * @return ActivityInterface|ActivityModelFactory
      * @throws NoSuchEntityException
      */
-    public function getFirstByTypeAndStatus(string $type, string $status): ActivityInterface
+    public function getOneByTypeAndStatus(string $type, string $status, string $order): ActivityInterface
     {
         $collection = $this->collectionFactory->create();
         $collection->addFieldToFilter(ActivityModel::TYPE, ['eq' => $type]);
         $collection->addFieldToFilter(ActivityModel::STATUS, ['eq' => $status]);
-        $collection->addOrder(ActivityModel::CREATED_AT, Collection::SORT_ORDER_ASC);
-        $collection->load();
+        $collection->addOrder(ActivityModel::CREATED_AT, $order);
 
         /** @var ActivityInterface $activity */
         $activity = $collection->getFirstItem();
@@ -122,9 +138,49 @@ class ActivityRepository implements ActivityRepositoryInterface
      * @return ActivityInterface|ActivityModelFactory
      * @throws NoSuchEntityException
      */
+    public function getLastDownloadedOrUploadedByType(string $type): ActivityInterface
+    {
+        return $this->getOneByTypeAndStatuses($type, [ActivityStateInterface::DOWNLOADED, ActivityStateInterface::UPLOADED], Collection::SORT_ORDER_DESC);
+    }
+
+    /**
+     * @param string $type
+     * @param array $statuses
+     * @param string $order
+     * @return ActivityInterface|ActivityModelFactory
+     * @throws NoSuchEntityException
+     */
+    public function getOneByTypeAndStatuses(string $type, array $statuses, string $order): ActivityInterface
+    {
+        $collection = $this->collectionFactory->create();
+        $collection->addFieldToFilter(ActivityModel::TYPE, ['eq' => $type]);
+        $collection->addFieldToFilter(ActivityModel::STATUS, ['in' => $statuses]);
+        $collection->addOrder(ActivityModel::CREATED_AT, $order);
+
+        /** @var ActivityInterface $activity */
+        $activity = $collection->getFirstItem();
+
+        if (!$activity->getId()) {
+            throw new NoSuchEntityException(
+                __(
+                    'Zero TransporterActivity record found with status "%1" and type "%2"',
+                    implode(',', $statuses),
+                    $type
+                )
+            );
+        }
+
+        return $activity;
+    }
+
+    /**
+     * @param string $type
+     * @return ActivityInterface|ActivityModelFactory
+     * @throws NoSuchEntityException
+     */
     public function getFirstManipulatedByType(string $type): ActivityInterface
     {
-        return $this->getFirstByTypeAndStatus($type, ActivityStateInterface::MANIPULATED);
+        return $this->getOneByTypeAndStatus($type, ActivityStateInterface::MANIPULATED, Collection::SORT_ORDER_ASC);
     }
 
     /**

@@ -21,4 +21,16 @@ interface ActivityStateInterface
     const UPLOADING = 'uploading';
     const UPLOADED = 'uploaded';
     const UPLOAD_ERROR = 'upload_error';
+
+    public const ALL = [
+        self::DOWNLOADING,
+        self::DOWNLOADED,
+        self::DOWNLOAD_ERROR,
+        self::MANIPULATING,
+        self::MANIPULATED,
+        self::MANIPULATE_ERROR,
+        self::UPLOADING,
+        self::UPLOADED,
+        self::UPLOAD_ERROR
+    ];
 }

@@ -34,6 +34,13 @@ interface ActivityRepositoryInterface
      * @return ActivityInterface
      * @throws NoSuchEntityException
      */
+    public function getLastDownloadedOrUploadedByType(string $type): ActivityInterface;
+
+    /**
+     * @param string $type
+     * @return ActivityInterface
+     * @throws NoSuchEntityException
+     */
     public function getFirstManipulatedByType(string $type): ActivityInterface;
 
     /**

@@ -13,7 +13,6 @@ use Exception;
 use Magento\Framework\DataObject;
 use Magento\Framework\Model\AbstractExtensibleModel;
 use Websolute\TransporterActivity\Api\Data\ActivityInterface;
-use function json_decode;
 
 class ActivityModel extends AbstractExtensibleModel implements ActivityInterface
 {
@@ -79,20 +78,20 @@ class ActivityModel extends AbstractExtensibleModel implements ActivityInterface
     }
 
     /**
-     * @return DataObject
-     */
-    public function getExtra(): DataObject
-    {
-        $data = $this->getData(self::EXTRA) ? json_decode($this->getData(self::EXTRA), true) : [];
-        return new DataObject($data);
-    }
-
-    /**
      * @param DataObject $value
      */
     public function setExtra(DataObject $value)
     {
         $this->setData(self::EXTRA, $value->toJson());
+    }
+
+    /**
+     * @return DataObject
+     */
+    public function getExtra(): DataObject
+    {
+        $data = $this->getData(self::EXTRA) ? \json_decode($this->getData(self::EXTRA), true) : [];
+        return new DataObject($data);
     }
 
     /**
