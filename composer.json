@@ -1,5 +1,5 @@
 {
-  "name": "websolute/magento-transporter-activity",
+  "name": "websolutespa/magento-transporter-activity",
   "description": "Websolute Transporter Activity module",
   "type": "magento2-module",
   "require": {
