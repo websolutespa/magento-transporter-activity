@@ -1,7 +1,7 @@
 <?php
 /*
  * Copyright © Websolute spa. All rights reserved.
- * See COPYING.txt for license details.
+ * See LICENSE and/or COPYING.txt for license details.
  */
 
 declare(strict_types=1);
@@ -140,7 +140,14 @@ class ActivityRepository implements ActivityRepositoryInterface
      */
     public function getLastDownloadedOrUploadedByType(string $type): ActivityInterface
     {
-        return $this->getOneByTypeAndStatuses($type, [ActivityStateInterface::DOWNLOADED, ActivityStateInterface::UPLOADED], Collection::SORT_ORDER_DESC);
+        return $this->getOneByTypeAndStatuses(
+            $type,
+            [
+                ActivityStateInterface::DOWNLOADED,
+                ActivityStateInterface::UPLOADED
+            ],
+            Collection::SORT_ORDER_DESC
+        );
     }
 
     /**

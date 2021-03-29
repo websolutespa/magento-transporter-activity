@@ -1,12 +1,27 @@
 {
-  "name": "websolute/transporter-activity",
-  "version": "1.0.0",
+  "name": "websolute/magento-transporter-activity",
   "description": "Websolute Transporter Activity module",
   "type": "magento2-module",
   "require": {
     "magento/framework": "*"
   },
-  "license": "OSL-3.0",
+  "authors": [
+    {
+      "name": "Riccardo Ugolini",
+      "email": "riccardo.ugolini@gmail.com",
+      "homepage": "https://www.linkedin.com/in/riccardougolini/",
+      "role": "Software Architect"
+    },
+    {
+      "name": "Danilo Argentiero",
+      "email": "argentiero.danilo@gmail.com",
+      "homepage": "https://www.linkedin.com/in/daniloargentiero/",
+      "role": "Software Architect"
+    }
+  ],
+  "license": [
+    "MIT"
+  ],
   "autoload": {
     "files": [
       "registration.php"
